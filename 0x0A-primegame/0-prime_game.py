@@ -2,15 +2,6 @@
 """0. Prime Game - Maria and Ben are playing a game"""
 
 def is_winner(rounds, numbers):
-    """Determine the winner after a number of rounds.
-
-    Args:
-        rounds (int): Number of rounds to be played.
-        numbers (list): List of integers for each round.
-
-    Returns:
-        str: The name of the winner ("Ben" or "Maria").
-    """
     if rounds <= 0 or not numbers or rounds != len(numbers):
         return None
 
