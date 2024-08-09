@@ -1,42 +1,39 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 """0. Prime Game - Maria and Ben are playing a game"""
 
+def is_winner(rounds, numbers):
+    """Determine the winner after a number of rounds.
 
-def isWinner(x, nums):
-    """x - rounds
-    nums - numbers list
+    Args:
+        rounds (int): Number of rounds to be played.
+        numbers (list): List of integers for each round.
+
+    Returns:
+        str: The name of the winner ("Ben" or "Maria").
     """
-    if x <= 0 or nums is None:
-        return None
-    if x != len(nums):
+    if rounds <= 0 or not numbers or rounds != len(numbers):
         return None
 
-    ben = 0
-    maria = 0
+    ben_score, maria_score = 0, 0
+    max_num = max(numbers)
+    primes = [True] * (max_num + 1)
+    primes[0] = primes[1] = False
 
-    a = [1 for x in range(sorted(nums)[-1] + 1)]
-    a[0], a[1] = 0, 0
-    for i in range(2, len(a)):
-        rm_multiples(a, i)
+    for i in range(2, int(max_num ** 0.5) + 1):
+        if primes[i]:
+            for multiple in range(i * i, max_num + 1, i):
+                primes[multiple] = False
 
-    for i in nums:
-        if sum(a[0:i + 1]) % 2 == 0:
-            ben += 1
+    for num in numbers:
+        prime_count = sum(primes[:num + 1])
+        if prime_count % 2 == 0:
+            ben_score += 1
         else:
-            maria += 1
-    if ben > maria:
+            maria_score += 1
+
+    if ben_score > maria_score:
         return "Ben"
-    if maria > ben:
+    elif maria_score > ben_score:
         return "Maria"
     return None
 
-
-def rm_multiples(ls, x):
-    """removes multiple
-    of primes
-    """
-    for i in range(2, len(ls)):
-        try:
-            ls[i * x] = 0
-        except (ValueError, IndexError):
-            break
