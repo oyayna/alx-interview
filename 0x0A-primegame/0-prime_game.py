@@ -1,30 +1,40 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
 """0. Prime Game - Maria and Ben are playing a game"""
 
-def is_winner(rounds, numbers):
-    if rounds <= 0 or not numbers or rounds != len(numbers):
+def isWinner(x, nums):
+    """x - rounds
+    nums - numbers list
+    """
+    if x <= 0 or nums is None:
+        return None
+    if x != len(nums):
         return None
 
-    ben_score, maria_score = 0, 0
-    max_num = max(numbers)
-    primes = [True] * (max_num + 1)
-    primes[0] = primes[1] = False
+    ben_score = 0
+    maria_score = 0
 
-    for i in range(2, int(max_num ** 0.5) + 1):
-        if primes[i]:
-            for multiple in range(i * i, max_num + 1, i):
-                primes[multiple] = False
+    primes = [1 for _ in range(max(nums) + 1)]
+    primes[0], primes[1] = 0, 0
+    for i in range(2, len(primes)):
+        remove_multiples(primes, i)
 
-    for num in numbers:
-        prime_count = sum(primes[:num + 1])
-        if prime_count % 2 == 0:
+    for num in nums:
+        if sum(primes[:num + 1]) % 2 == 0:
             ben_score += 1
         else:
             maria_score += 1
 
     if ben_score > maria_score:
         return "Ben"
-    elif maria_score > ben_score:
+    if maria_score > ben_score:
         return "Maria"
     return None
+
+def remove_multiples(primes, x):
+    """Removes multiples of primes"""
+    for i in range(2, len(primes)):
+        try:
+            primes[i * x] = 0
+        except (ValueError, IndexError):
+            break
 
